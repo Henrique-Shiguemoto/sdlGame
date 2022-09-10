@@ -1,20 +1,26 @@
 CC=g++
 COMPILER_FLAGS=-g -Wall -Werror -std=c++14
-INCLUDE_FLAGS=-IC:\dev\SDL2\SDL2-2.0.22\include
-LINKER_FLAGS=-LC:\dev\SDL2\SDL2-2.0.22\lib\x64\SDL2.lib -LC:\dev\SDL2\SDL2-2.0.22\lib\x64\SDL2main.lib
+INCLUDE_FLAGS=-Isrc/include
+LINKER_FLAGS=-Lsrc/lib -lmingw32 -lSDL2main -lSDL2
+BIN=main
+OBJS=main.o GameConstants.o
+SRC=main.cpp GameConstants.cpp
 DEBUGGER=gdb
 
-main: main.o
-	$(CC) main.o $(COMPILER_FLAGS) -o main $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+$(BIN): $(OBJS)
+	$(CC) -o $(BIN) $(OBJS) $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
-main.o: main.cpp
-	$(CC) -c main.cpp $(INCLUDE_FLAGS) $(LINKER_FLAGS)
+main.o: $(SRC)
+	$(CC) $(COMPILER_FLAGS) -c $(SRC) $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
-debug: main
-	$(DEBUGGER) main
+GameConstants.o: GameConstants.cpp GameConstants.h
+	$(CC) $(COMPILER_FLAGS) -c GameConstants.cpp
 
-run: main
-	main
+run: $(BIN)
+	$(BIN)
 
-clean: 
-	del *.o main *.pdb *.ilk
+debug: $(BIN)
+	$(DEBUGGER) $(BIN)
+
+clean:
+	del *.o *.exe
