@@ -1,20 +1,20 @@
 CC=g++
-BIN=main
-OBJ=main.o
-DEBUG_FLAGS= -Wall -Wextra -Werror -g -std=c++17
+COMPILER_FLAGS=-g -Wall -Werror -std=c++14
+INCLUDE_FLAGS=-IC:\dev\SDL2\SDL2-2.0.22\include
+LINKER_FLAGS=-LC:\dev\SDL2\SDL2-2.0.22\lib\x64\SDL2.lib -LC:\dev\SDL2\SDL2-2.0.22\lib\x64\SDL2main.lib
 DEBUGGER=gdb
 
-$(BIN): main.o
-	$(CC) $(DEBUG_FLAGS) -o $(BIN) $(OBJ)
+main: main.o
+	$(CC) main.o $(COMPILER_FLAGS) -o main $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
-$(OBJ): main.cpp main.h
-	$(CC) -c main.cpp
+main.o: main.cpp
+	$(CC) -c main.cpp $(INCLUDE_FLAGS) $(LINKER_FLAGS)
 
-run: $(BIN)
-	$(BIN)
-	
-debug: $(BIN)
-	$(DEBUGGER) $(BIN)
+debug: main
+	$(DEBUGGER) main
+
+run: main
+	main
 
 clean: 
-	del *.o *.exe
+	del *.o main *.pdb *.ilk

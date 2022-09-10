@@ -1,7 +1,11 @@
 #include <iostream>
-#include "main.h"
 
-int main(){
-	std::cout << "Hello World!" << std::endl;
+#define SDL_MAIN_HANDLED
+#include "SDL.h"
+
+int main(int argc, char* argv[]){
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	
 	return 0;
 }
